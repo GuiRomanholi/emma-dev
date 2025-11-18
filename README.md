@@ -58,7 +58,7 @@ O primeiro passo é criar os recursos do banco de dados (Grupo de Recursos, Serv
     # Variáveis de configuração
     RG="rg-emma"
     LOCATION="brazilsouth"
-    SERVER_NAME="sqlserver-rm557462"
+    SERVER_NAME="sqlserver-emma-rm557462"
     USERNAME="admsql"
     # Lembre-se da boa prática de não deixar senhas no código em ambientes de produção.
     PASSWORD="Fiap@2tdsvms"
@@ -116,7 +116,7 @@ Este script irá criar o App Service, o Application Insights e configurar as var
     export RUNTIME="JAVA:17-java17"
 
     # --- Variáveis do Banco de Dados ---
-    export DB_SERVER_NAME="sqlserver-rm557462"
+    export DB_SERVER_NAME="sqlserver-emma-rm557462"
     export DB_NAME="emmadb"
     export DB_USER="admsql"
     export DB_PASSWORD="Fiap@2tdsvms"
