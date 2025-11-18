@@ -54,32 +54,32 @@ O primeiro passo é criar os recursos do banco de dados (Grupo de Recursos, Serv
 
     ```bash
     #!/bin/bash
-    
+
     # Variáveis de configuração
-    RG="rg-ondetamoto"
+    RG="rg-emma"
     LOCATION="brazilsouth"
     SERVER_NAME="sqlserver-rm557462"
     USERNAME="admsql"
     # Lembre-se da boa prática de não deixar senhas no código em ambientes de produção.
     PASSWORD="Fiap@2tdsvms"
-    DBNAME="ondetamotodb"
-    
+    DBNAME="emmadb"
+
     # Cria o grupo de recursos
     echo "Criando o grupo de recursos: $RG..."
     az group create --name $RG --location $LOCATION
-    
+
     # Cria o servidor SQL
     echo "Criando o servidor SQL: $SERVER_NAME..."
     az sql server create -l $LOCATION -g $RG -n $SERVER_NAME -u $USERNAME -p $PASSWORD --enable-public-network true
-    
+
     # Cria o banco de dados (que estará vazio, pronto para o Flyway)
     echo "Criando o banco de dados: $DBNAME..."
     az sql db create -g $RG -s $SERVER_NAME -n $DBNAME --service-objective Basic --backup-storage-redundancy Local --zone-redundant false
-    
+
     # Cria a regra de firewall para permitir acesso de serviços do Azure e outros IPs
     echo "Configurando a regra de firewall..."
     az sql server firewall-rule create -g $RG -s $SERVER_NAME -n AllowAll --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
-    
+
     echo "Infraestrutura do banco de dados criada com sucesso!"
     echo "O banco '$DBNAME' está pronto e vazio para o Flyway gerenciar o schema."
     ```
@@ -98,9 +98,9 @@ Este script irá criar o App Service, o Application Insights e configurar as var
 
 1.  Ainda no Cloud Shell, crie o script de deploy:
     ```bash
-    touch deploy-ondetamoto.sh
-    chmod +x deploy-ondetamoto.sh
-    nano deploy-ondetamoto.sh
+    touch deploy-emma.sh
+    chmod +x deploy-emma.sh
+    nano deploy-emma.sh
     ```
 
 4.  Cole o script abaixo, **lembrando de alterar** o valor da variável `GITHUB_REPO_NAME` para o seu usuário e repositório.
@@ -109,17 +109,17 @@ Este script irá criar o App Service, o Application Insights e configurar as var
     #!/bin/bash
     # --- Variáveis de Configuração da Aplicação ---
     # Altere 'rm557462' para seu identificador único
-    export RESOURCE_GROUP_NAME="rg-ondetamoto"
-    export WEBAPP_NAME="ondetamoto-rm557462"
-    export APP_SERVICE_PLAN="planOndetamoto"
+    export RESOURCE_GROUP_NAME="rg-emma"
+    export WEBAPP_NAME="emma-rm557462"
+    export APP_SERVICE_PLAN="planEmma"
     export LOCATION="brazilsouth"
     export RUNTIME="JAVA:17-java17"
-    
+
     # --- Variáveis do Banco de Dados ---
     export DB_SERVER_NAME="sqlserver-rm557462"
-    export DB_NAME="ondetamotodb"
+    export DB_NAME="emmadb"
     export DB_USER="admsql"
-    export DB_PASSWORD="Fiap@2tdsvms" # ATENÇÃO: É recomendado usar segredos do Azure DevOps para a senha!
+    export DB_PASSWORD="Fiap@2tdsvms"
     
     # Construção da URL JDBC dinamicamente
     export JDBC_URL="jdbc:sqlserver://${DB_SERVER_NAME}.database.windows.net:1433;database=${DB_NAME};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
@@ -175,7 +175,7 @@ Este script irá criar o App Service, o Application Insights e configurar as var
 
 5.  Execute o script:
     ```bash
-    ./deploy-ondetamoto.sh
+    ./deploy-emma.sh
     ```
     Este comando irá configurar o GitHub Actions, mas o arquivo de workflow gerado pode precisar de ajustes.
 
@@ -224,7 +224,7 @@ Escolha o template Java with Gradle (ou pipeline vazia)
 
 Após a conclusão do deploy pelo GitHub Actions, o Flyway deverá ter executado as migrations e criado as tabelas.
 
-1.  No Portal Azure, vá para o seu banco de dados `ondetamotodb`.
+1.  No Portal Azure, vá para o seu banco de dados `emmadb`.
 2.  No menu lateral, selecione **Editor de Consultas (visualização)**.
 3.  Faça o login com a **Autenticação do SQL Server**:
     * **Login**: `admsql`
