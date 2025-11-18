@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{register.title}">Registro - Emma</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-gray-200 flex items-center justify-center min-h-screen px-4">
+
+<div class="w-full max-w-sm bg-neutral-900 p-8 rounded-2xl shadow-xl border border-neutral-800">
+
+    <h2 class="text-3xl font-semibold text-white mb-6 text-center" th:text="#{register.header}">Registro</h2>
+
+    <div th:if="${errorMessage}"
+         class="bg-red-900/40 text-red-300 border border-red-700 px-4 py-3 rounded-lg mb-4">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <form th:action="@{/register}" th:object="${person}" method="post" class="space-y-5">
+
+        <div>
+            <label for="name" class="block mb-1 text-gray-300" th:text="#{register.name}">Nome:</label>
+            <input type="text" id="name" th:field="*{name}" required
+                   class="w-full bg-neutral-800 border border-neutral-700 text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-white transition">
+        </div>
+
+        <div>
+            <label for="email" class="block mb-1 text-gray-300" th:text="#{register.email}">Email:</label>
+            <input type="email" id="email" th:field="*{email}" required
+                   class="w-full bg-neutral-800 border border-neutral-700 text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-white transition">
+        </div>
+
+        <div>
+            <label for="password" class="block mb-1 text-gray-300" th:text="#{register.password}">Senha:</label>
+            <input type="password" id="password" th:field="*{password}" required
+                   class="w-full bg-neutral-800 border border-neutral-700 text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-white transition">
+        </div>
+
+        <div>
+            <label for="role" class="block mb-1 text-gray-300" th:text="#{register.role}">Tipo de Usuário:</label>
+            <select id="role" th:field="*{role}" required
+                    class="w-full bg-neutral-800 border border-neutral-700 text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-white transition">
+                <option value="" th:text="#{register.role.select}">Selecione um tipo</option>
+                <option th:each="role : ${allowedRoles}"
+                        th:value="${role}"
+                        th:text="${role.name()}"></option>
+            </select>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-white text-black font-semibold py-2 rounded-lg hover:opacity-80 transition"
+                th:text="#{register.submit}">
+            Registrar
+        </button>
+
+    </form>
+
+    <p class="mt-6 text-sm text-gray-400 text-center">
+        <span th:text="#{register.login.prompt}">Já tem uma conta?</span>
+        <a th:href="@{/login}" class="text-white hover:opacity-75" th:text="#{register.login.link}">Faça login aqui</a>
+    </p>
+
+    <div class="flex justify-center space-x-4 mt-6 text-xs text-gray-500">
+        <a th:href="@{?lang=pt_BR}" class="hover:text-white" th:text="#{language.portuguese}">Português (BR)</a>
+        <span>|</span>
+        <a th:href="@{?lang=en_US}" class="hover:text-white" th:text="#{language.english}">English (US)</a>
+    </div>
+
+</div>
+
+</body>
+</html>

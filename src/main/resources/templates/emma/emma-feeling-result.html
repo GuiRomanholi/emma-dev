@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Emma - Resposta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-gray-200">
+
+<div th:replace="~{fragments/layout :: header}"></div>
+
+<main class="max-w-3xl mx-auto p-6 mt-10">
+
+    <h2 class="text-3xl font-semibold text-white mb-8 text-center">Resposta da Emma</h2>
+
+    <div class="bg-neutral-900 border border-neutral-800 shadow-xl rounded-2xl p-8">
+
+        <p class="whitespace-pre-line leading-relaxed text-gray-200" th:text="${response}"></p>
+
+        <div class="text-center mt-8">
+            <a th:href="@{/emma/feeling}"
+               class="inline-block bg-white text-black font-semibold px-6 py-2 rounded-lg hover:opacity-80 transition">
+                Voltar
+            </a>
+        </div>
+
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+
+</body>
+</html>

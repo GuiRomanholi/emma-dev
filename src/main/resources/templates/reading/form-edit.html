@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Leitura</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-gray-200">
+
+<div th:replace="~{fragments/layout :: header}"></div>
+
+<main class="max-w-2xl mx-auto p-6 mt-10">
+
+    <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-8 shadow-xl">
+
+        <h2 class="text-3xl font-semibold text-white mb-8 text-center">Editar Leitura</h2>
+
+        <form th:action="@{/readings/update/{id}(id=${readingId})}"
+              th:object="${readingRequest}"
+              method="post"
+              class="w-full">
+
+            <!-- Data e Hora -->
+            <div class="mb-6">
+                <label for="date" class="block text-gray-300 text-sm font-semibold mb-2">Data e Hora:</label>
+                <input type="datetime-local" id="date" th:field="*{date}" required
+                       class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-100 focus:border-white focus:ring-white focus:outline-none">
+            </div>
+
+            <!-- Humor -->
+            <div class="mb-6">
+                <label for="humor" class="block text-gray-300 text-sm font-semibold mb-2">Humor:</label>
+                <input type="text" id="humor" th:field="*{humor}"
+                       class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-100 focus:border-white focus:ring-white focus:outline-none">
+            </div>
+
+            <!-- Pessoa -->
+            <div class="mb-6">
+                <label for="personId" class="block text-gray-300 text-sm font-semibold mb-2">Pessoa:</label>
+                <select id="personId" th:field="*{personId}"
+                        class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-100 focus:border-white focus:ring-white focus:outline-none">
+                    <option value="">Nenhuma Pessoa</option>
+                    <option th:each="p : ${persons}" th:value="${p.id}" th:text="${p.name}"></option>
+                </select>
+            </div>
+
+            <!-- Descrição -->
+            <div class="mb-6">
+                <label for="description" class="block text-gray-300 text-sm font-semibold mb-2">Descrição:</label>
+                <textarea id="description" th:field="*{description}" rows="5"
+                          class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-100 focus:border-white focus:ring-white focus:outline-none"></textarea>
+            </div>
+
+            <!-- Ações -->
+            <div class="flex items-center justify-between mt-6">
+
+                <button type="submit"
+                        class="bg-white text-black font-semibold py-2 px-6 rounded-lg hover:opacity-80 transition">
+                    Salvar Alterações
+                </button>
+
+                <a th:href="@{/readings}"
+                   class="text-gray-300 hover:text-white font-semibold transition">
+                    Voltar para a lista
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+
+</body>
+</html>

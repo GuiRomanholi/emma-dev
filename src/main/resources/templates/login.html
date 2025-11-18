@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- O título agora usa a chave i18n -->
+    <title th:text="#{login.title}">Login - Emma</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-gray-200 flex items-center justify-center min-h-screen px-4">
+
+<div class="w-full max-w-sm bg-neutral-900 p-8 rounded-2xl shadow-xl border border-neutral-800">
+
+    <h2 class="text-3xl font-semibold text-white mb-6 text-center" th:text="#{login.header}">Login</h2>
+
+    <div th:if="${loginError}"
+         class="bg-red-900/40 text-red-300 border border-red-700 px-4 py-3 rounded-lg mb-4">
+        <p th:text="${loginError}"></p>
+    </div>
+
+    <div th:if="${successMessage}"
+         class="bg-green-900/40 text-green-300 border border-green-700 px-4 py-3 rounded-lg mb-4">
+        <p th:text="${successMessage}"></p>
+    </div>
+
+    <form th:action="@{/login}" method="post" class="space-y-5">
+
+        <div>
+            <label for="username" class="block mb-1 text-gray-300" th:text="#{login.email}">Email:</label>
+            <input type="email" id="username" name="username" required autofocus
+                   class="w-full bg-neutral-800 border border-neutral-700 text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-white transition">
+        </div>
+
+        <div>
+            <label for="password" class="block mb-1 text-gray-300" th:text="#{login.password}">Senha:</label>
+            <input type="password" id="password" name="password" required
+                   class="w-full bg-neutral-800 border border-neutral-700 text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-white transition">
+        </div>
+
+        <button type="submit"
+                class="w-full bg-white text-black font-semibold py-2 rounded-lg hover:opacity-80 transition"
+                th:text="#{login.submit}">
+            Entrar
+        </button>
+    </form>
+
+    <p class="mt-6 text-sm text-gray-400 text-center">
+        <span th:text="#{login.register.prompt}">Não tem uma conta?</span>
+        <a th:href="@{/register}" class="text-white hover:opacity-75" th:text="#{login.register.link}">Registre-se aqui</a>
+    </p>
+
+    <div class="flex justify-center space-x-4 mt-6 text-xs text-gray-500">
+        <a th:href="@{?lang=pt_BR}" class="hover:text-white" th:text="#{language.portuguese}">Português (BR)</a>
+        <span>|</span>
+        <a th:href="@{?lang=en_US}" class="hover:text-white" th:text="#{language.english}">English (US)</a>
+    </div>
+
+</div>
+
+</body>
+</html>
