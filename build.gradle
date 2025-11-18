@@ -37,8 +37,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	implementation 'org.springframework.ai:spring-ai-starter-model-openai'
 	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-sqlserver'
 
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -53,4 +54,16 @@ dependencyManagement {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+springBoot {
+	mainClass = 'br.com.fiap.emma.EmmaApplication'
+}
+
+tasks.named('bootJar') {
+	archiveBaseName.set('api-emma')
+}
+
+tasks.named('jar') {
+	enabled = false
 }
