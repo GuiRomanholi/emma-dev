@@ -109,6 +109,7 @@ Este script irá criar o App Service, o Application Insights e configurar as var
     #!/bin/bash
 
     # --- Variáveis de Configuração da Aplicação ---
+    # Altere 'rm557462' para seu identificador único
     export RESOURCE_GROUP_NAME="rg-emma"
     export WEBAPP_NAME="emma-rm557462"
     export APP_SERVICE_PLAN="planEmma"
@@ -119,11 +120,12 @@ Este script irá criar o App Service, o Application Insights e configurar as var
     export DB_SERVER_NAME="sqlserver-emma-rm557462"
     export DB_NAME="emmadb"
     export DB_USER="admsql"
+    # Nota: Idealmente, use $(SPRING_DATASOURCE_PASSWORD) aqui também para segurança, igual fez com a API Key
     export DB_PASSWORD="Fiap@2tdsvms"
     
-    # --- Variável da IA (CORRIGIDO) ---
-    # Pega da variável de ambiente OPENAI_API_KEY configurada no pipeline
-    export API_KEY_IA="$OPENAI_API_KEY"
+    # --- Variável da IA (CORRIGIDO E SEGURO) ---
+    # As aspas "" protegem o valor. Os parenteses () mandam o Azure injetar o segredo.
+    export API_KEY_IA="$(OPENAI_API_KEY)"
     
     # Construção da URL JDBC dinamicamente
     export JDBC_URL="jdbc:sqlserver://${DB_SERVER_NAME}.database.windows.net:1433;database=${DB_NAME};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
@@ -157,7 +159,7 @@ Este script irá criar o App Service, o Application Insights e configurar as var
     --parent sites/"$WEBAPP_NAME" \
     --set properties.allow=true
     
-    # Configurar variáveis de ambiente (Banco + IA)
+    # Configurar as Variáveis de Ambiente (Banco de Dados + OpenAI) na Aplicação
     echo "Configurando as variáveis de ambiente..."
     az webapp config appsettings set \
     --name "$WEBAPP_NAME" \
