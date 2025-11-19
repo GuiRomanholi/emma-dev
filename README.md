@@ -107,19 +107,23 @@ Este script irá criar o App Service, o Application Insights e configurar as var
 
     ```bash
     #!/bin/bash
+
     # --- Variáveis de Configuração da Aplicação ---
-    # Altere 'rm557462' para seu identificador único
     export RESOURCE_GROUP_NAME="rg-emma"
     export WEBAPP_NAME="emma-rm557462"
     export APP_SERVICE_PLAN="planEmma"
     export LOCATION="brazilsouth"
     export RUNTIME="JAVA:17-java17"
-
+    
     # --- Variáveis do Banco de Dados ---
     export DB_SERVER_NAME="sqlserver-emma-rm557462"
     export DB_NAME="emmadb"
     export DB_USER="admsql"
     export DB_PASSWORD="Fiap@2tdsvms"
+    
+    # --- Variável da IA (CORRIGIDO) ---
+    # Pega da variável de ambiente OPENAI_API_KEY configurada no pipeline
+    export API_KEY_IA="$OPENAI_API_KEY"
     
     # Construção da URL JDBC dinamicamente
     export JDBC_URL="jdbc:sqlserver://${DB_SERVER_NAME}.database.windows.net:1433;database=${DB_NAME};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
@@ -153,15 +157,16 @@ Este script irá criar o App Service, o Application Insights e configurar as var
     --parent sites/"$WEBAPP_NAME" \
     --set properties.allow=true
     
-    # Configurar as Variáveis de Ambiente do Banco de Dados na Aplicação
-    echo "Configurando as variáveis de ambiente do banco de dados..."
+    # Configurar variáveis de ambiente (Banco + IA)
+    echo "Configurando as variáveis de ambiente..."
     az webapp config appsettings set \
     --name "$WEBAPP_NAME" \
     --resource-group "$RESOURCE_GROUP_NAME" \
     --settings \
     SPRING_DATASOURCE_USERNAME="$DB_USER" \
     SPRING_DATASOURCE_PASSWORD="$DB_PASSWORD" \
-    SPRING_DATASOURCE_URL="$JDBC_URL"
+    SPRING_DATASOURCE_URL="$JDBC_URL" \
+    OPENAI_API_KEY="$API_KEY_IA"
     
     # Reiniciar o Web App para aplicar as configurações
     echo "Reiniciando o Web App para aplicar as novas configurações..."
