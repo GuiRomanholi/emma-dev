@@ -107,7 +107,7 @@ Este script irá criar o App Service, o Application Insights e configurar as var
 
     ```bash
     #!/bin/bash
-
+    
     # --- Variáveis de Configuração da Aplicação ---
     # Altere 'rm557462' para seu identificador único
     export RESOURCE_GROUP_NAME="rg-emma"
@@ -120,12 +120,11 @@ Este script irá criar o App Service, o Application Insights e configurar as var
     export DB_SERVER_NAME="sqlserver-emma-rm557462"
     export DB_NAME="emmadb"
     export DB_USER="admsql"
-    # Nota: Idealmente, use $(SPRING_DATASOURCE_PASSWORD) aqui também para segurança, igual fez com a API Key
     export DB_PASSWORD="Fiap@2tdsvms"
     
-    # --- Variável da IA (CORRIGIDO E SEGURO) ---
-    # As aspas "" protegem o valor. Os parenteses () mandam o Azure injetar o segredo.
-    export API_KEY_IA="$(OPENAI_API_KEY)"
+    # --- Variável da IA (CORRIGIDO) ---
+    # Usamos $VARIAVEL (sem parenteses) para que o Bash entenda que é uma variável, não um comando.
+    export API_KEY_IA="$OPENAI_API_KEY"
     
     # Construção da URL JDBC dinamicamente
     export JDBC_URL="jdbc:sqlserver://${DB_SERVER_NAME}.database.windows.net:1433;database=${DB_NAME};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
