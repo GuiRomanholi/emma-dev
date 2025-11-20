@@ -1,23 +1,58 @@
-# Projeto Ondetamoto - Guia de Deploy
+# 🧘‍♀️ EMMA — Assistente de Bem-Estar para Profissionais
 
-Este documento detalha o processo completo para provisionar a infraestrutura na Microsoft Azure, realizar o deploy da aplicação Java (Spring Boot) e verificar a sua funcionalidade.
+A **EMMA** é um aplicativo mobile focado em promover o bem-estar emocional e mental de trabalhadores. Seu objetivo é ajudar profissionais a acompanharem seu estado emocional, reduzirem o estresse e manterem uma rotina de trabalho mais saudável, equilibrada e sustentável.
 
-## DDL da Tabelas
+---
 
-As tabelas são criadas automaticamente pelo Flyway inserido no projeto, caso queira averiguar entre no projeto vá em src > main > resources > db > migration e estarão lá.
+## 🎯 Ideia Principal
 
-## 📝 Descrição da Solução
+A EMMA permite que o usuário registre como está se sentindo ao longo do dia, acompanhe sua evolução emocional e receba dicas de bem-estar personalizadas.
 
-O projeto **OndeTáMoto?** é uma solução tecnológica baseada em IoT (Internet das Coisas) desenvolvida para a Mottu, uma empresa de motofrete, com o objetivo de gerenciar e controlar motos em tempo real dentro de sua garagem. O sistema utiliza tags inteligentes em cada moto para registrar automaticamente seus movimentos (entrada, saída e permanência). Esses dados são centralizados em um aplicativo mobile com uma interface amigável, permitindo à equipe visualizar o status, localização, e categorização de cada moto.
+Por meio de uma interface simples e intuitiva, o app incentiva hábitos saudáveis e práticas de autocuidado, auxiliando na prevenção do estresse, da ansiedade e do burnout.
 
-## 📈 Descrição dos Benefícios para o Negócio
+---
 
-A solução **OndeTáMoto?** resolve o problema de controle ineficiente das motos na garagem da Mottu, substituindo planilhas e anotações manuais. Ela traz os seguintes benefícios para o negócio:
+## 🧩 Problema
 
-* **Visibilidade e Agilidade**: Oferece informações em tempo real sobre a localização e status das motos, aumentando a visibilidade operacional.
-* **Eficiência e Precisão**: Automatiza o registro de movimentações, reduzindo erros humanos e retrabalhos.
-* **Organização e Segurança**: Promove um controle mais organizado e seguro da frota.
-* **Inovação Adaptada**: Utiliza tecnologia IoT para uma gestão prática e inteligente, sob medida para a operação da Mottu.
+Com o crescimento do trabalho remoto e híbrido, muitos profissionais enfrentam:
+
+- Aumento do estresse e ansiedade  
+- Dificuldade em equilibrar vida pessoal e profissional  
+- Sobrecarga mental e falta de pausas  
+- Pressão contínua por produtividade  
+
+Esses fatores impactam diretamente a saúde mental e o desempenho no trabalho, contribuindo para o esgotamento (burnout) e queda na qualidade de vida.
+
+---
+
+## 💡 Solução
+
+A EMMA funciona como um **assistente digital de bem-estar emocional**, combinando tecnologia, design simples e práticas de autocuidado.
+
+- O usuário registra diariamente seu humor e nível de estresse.  
+- A IA analisa padrões emocionais ao longo do tempo.  
+- O sistema oferece **dicas personalizadas** para melhorar o bem-estar.  
+- Gráficos e relatórios semanais ajudam a visualizar a evolução emocional.  
+
+Tudo isso em uma experiência amigável, leve e fácil de usar no dia a dia.
+
+---
+
+## 🧠 Inteligência Artificial
+
+A IA do sistema (Emma) analisa os registros de humor e os padrões de comportamento para gerar recomendações personalizadas.
+
+### Exemplos de Sugestões
+
+- **Para altos níveis de estresse:**  
+  > “Faça uma pausa de 5 minutos e pratique uma respiração profunda.”
+
+- **Para humor baixo:**  
+  > “Experimente uma breve caminhada para clarear a mente.”
+
+As dicas são rápidas, simples e projetadas para caber na rotina profissional.
+
+---
 
 ## ✔️ Pré-requisitos
 
@@ -123,7 +158,6 @@ Este script irá criar o App Service, o Application Insights e configurar as var
     export DB_PASSWORD="Fiap@2tdsvms"
     
     # --- Variável da IA (CORRIGIDO) ---
-    # Usamos $VARIAVEL (sem parenteses) para que o Bash entenda que é uma variável, não um comando.
     export API_KEY_IA="$OPENAI_API_KEY"
     
     # Construção da URL JDBC dinamicamente
@@ -220,7 +254,7 @@ Escolha o template Java with Gradle (ou pipeline vazia)
 | -------------------------- | ----------------------------------------------------------------------------------- |
 | SPRING_DATASOURCE_USERNAME | admsql                                                                              |
 | SPRING_DATASOURCE_PASSWORD | Fiap@2tdsvms                                                                        |
-| SPRING_DATASOURCE_URL      | jdbc:sqlserver://sqlserver-rm557462.database.windows.net:1433;database=ondetamotodb;encrypt=true;trustServerCertificate=false;|
+| SPRING_DATASOURCE_URL      | jdbc:sqlserver://sqlserver-emma-rm557462.database.windows.net:1433;database=emmadb;user=admsql@sqlserver-emma-rm557462;password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;|
 
 ---
 
@@ -238,10 +272,9 @@ Após a conclusão do deploy pelo GitHub Actions, o Flyway deverá ter executado
 4.  Execute as seguintes consultas para verificar se as tabelas foram criadas e se contêm dados:
 
     ```sql
-    select * from estabelecimento;
-    select * from setores;
-    select * from moto;
-    select * from usuario;
+    select * from person;
+    select * from reading;
+    select * from review;
     ```
 
 ### 4.2 Testando a API com Requisições
@@ -250,65 +283,48 @@ Após a conclusão do deploy pelo GitHub Actions, o Flyway deverá ter executado
 
 A API do projeto podia ser acessada via Swagger na rota:
 
-[https://ondetamoto-rm557462.azurewebsites.net/swagger-ui/index.html](https://ondetamoto-rm557462.azurewebsites.net/swagger-ui/index.html)
+[https://emma-rm557462.azurewebsites.net/swagger-ui/index.html](https://emma-rm557462.azurewebsites.net/swagger-ui/index.html)
 
 Tambem pode acessar as páginas criadas com o thymeleaf (Recomendado):
 
-[https://ondetamoto-rm557462.azurewebsites.net/login](https://ondetamoto-rm557462.azurewebsites.net/login)
+[https://emma-rm557462.azurewebsites.net/login](https://emma-rm557462.azurewebsites.net/login)
 
 > **Importante:**
-> Crie um **Estabelecimento** antes de criar um **Setor** e crie um **Setor** antes de adicionar uma **Moto**. O ID gerado em um passo é usado no próximo.
+> Crie um **Reading** antes de Fazer Uma Requisição para a AI, pois a Ai vai devolver uma **Solução** e colocar no **Review**. O ID gerado em um passo é usado no próximo.
 
 ## Rotas recomendadas para o Teste:
 #### Exemplo 1: (Registrar Usuário)
 
 ```bash
 {
-    "email": "henriquechaco@gmail.com",
-    "senha": "SenhaForte123",
-    "role": "ADMIN"
+  "name": "Geovanni",
+  "email": "geovannilupa@gmail.com",
+  "password": "Vermelho11",
+  "role": "ADMIN"
 }
 ```
 #### Exemplo 1.5: (Logar Usuário)
 
 ```bash
 {
-    "email": "henriquechaco@gmail.com",
-    "senha": "SenhaForte123"
+    "email": "geovannilupa@gmail.com",
+    "password": "Vermelho11"
 }
 ```
 
-#### Exemplo 2: (Criar Estabelecimento)
+#### Exemplo 2: (Criar Reading)
 
 ```bash
 {
-    "endereco": "Avenida Ale de Vasconcelos 362",
-    "usuarioId": 1
+  "date": "2025-11-20T21:07:12.122Z",
+  "description": "Eu errei no Trabalho",
+  "humor": "Estressado",
+  "personId": 1
 }
 ```
 
-#### Exemplo 3: (Criar Setor)
-
-```bash
-{
-    "nome": "Ala de Reparos Rápidos",
-    "tipo": "MANUTENCAO",
-    "tamanho": "Grande",
-    "idEstabelecimento": 1
-}
-```
-
-#### Exemplo 4: (Adicionar Moto)
-
-
-```bash
-{
-    "marca": "Honda",
-    "placa": "XYZ1234",
-    "tag": "MT-01",
-    "idSetores": 1
-}
-```
+#### Exemplo 3: (Criar Review)
+## Para Criar um review Basta Acessar a AI, colocar seu **feeling** uma **description** e qual o seu **reading** e ela retornará uma **message** para você e adicionara no **Review**
 
 ---
 
