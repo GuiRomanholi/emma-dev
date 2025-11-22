@@ -68,7 +68,7 @@ Antes de começar, garanta que você tenha:
 
 
 ## 🎥 Link do Vídeo
-[Link do Video de Devops](https://www.youtube.com/watch?v=vp3htHxnF74)
+[Link do Video de Devops](https://www.youtube.com/watch?v=wRkxjgMZu0o)
 
 ---
 
